@@ -6,3 +6,4 @@ drf-renderer-xlsx
 python-keycloak
 requests
 python-jose
+django-cors-headers

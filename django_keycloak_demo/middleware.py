@@ -168,9 +168,12 @@ class KeycloakMiddleware(MiddlewareMixin):
                                 status=PermissionDenied.status_code)
 
         try:
+            options = {"verify_signature": True, "verify_aud": True, "exp": True}
             user_permissions = self.keycloak.get_permissions(token,
                                                              method_token_info=self.method_validate_token.lower(),
-                                                             key=self.client_public_key)
+                                                             key=self.client_public_key,
+                                                             options=options
+                                                             )
         except KeycloakInvalidTokenError as e:
             return JsonResponse({"detail": AuthenticationFailed.default_detail},
                                 status=AuthenticationFailed.status_code)

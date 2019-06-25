@@ -1,0 +1,94 @@
+{
+  "allowRemoteResourceManagement": true,
+  "policyEnforcementMode": "ENFORCING",
+  "resources": [
+    {
+      "name": "inventory",
+      "ownerManagedAccess": false,
+      "attributes": {},
+      "_id": "26255cfa-284a-4679-bd95-41cae60acc05",
+      "uris": [],
+      "scopes": [
+        {
+          "name": "inventory:update"
+        },
+        {
+          "name": "inventory:add"
+        },
+        {
+          "name": "inventory:delete"
+        },
+        {
+          "name": "inventory:view"
+        }
+      ]
+    }
+  ],
+  "policies": [
+    {
+      "id": "56920c16-97a2-427b-ab3a-49d538cd8185",
+      "name": "normal-user",
+      "type": "role",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "roles": "[{\"id\":\"vue-client/super-user\",\"required\":true}]"
+      }
+    },
+    {
+      "id": "b89a75e2-1b7b-49bf-b34b-3f4fcec8037d",
+      "name": "super-user-policy",
+      "type": "role",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "roles": "[{\"id\":\"vue-client/super-user\",\"required\":true}]"
+      }
+    },
+    {
+      "id": "b2a44bbb-eb0d-445a-9e58-ff81ce4cc885",
+      "name": "read-only-access",
+      "type": "scope",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "resources": "[\"inventory\"]",
+        "scopes": "[\"inventory:view\"]",
+        "applyPolicies": "[\"normal-user\"]"
+      }
+    },
+    {
+      "id": "81a1ea12-a64f-4111-aa68-409aad77ea86",
+      "name": "full-access",
+      "type": "scope",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "resources": "[\"inventory\"]",
+        "scopes": "[\"inventory:view\",\"inventory:add\",\"inventory:update\",\"inventory:delete\"]",
+        "applyPolicies": "[\"super-user-policy\"]"
+      }
+    }
+  ],
+  "scopes": [
+    {
+      "id": "79246668-86d0-4a5c-8cdf-dc2f738a2ab0",
+      "name": "inventory:update",
+      "displayName": "inventory update"
+    },
+    {
+      "id": "a7fb717c-bfbf-48f4-ba56-110fed26646f",
+      "name": "inventory:view",
+      "displayName": "inventory view"
+    },
+    {
+      "id": "02308d11-6e44-4c6b-9546-1f8757b29d4f",
+      "name": "inventory:delete",
+      "displayName": "inventory delete"
+    },
+    {
+      "id": "178d9fb6-3915-4503-b04b-c36f657f926e",
+      "name": "inventory:add"
+    }
+  ]
+}

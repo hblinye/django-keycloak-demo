@@ -13,34 +13,28 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 
 
-
 KEYCLOAK_BEARER_AUTHENTICATION_EXEMPT_PATHS = [
     'admin', 'accounts',
-    ]
+]
+
 CONFIG_DIR = os.path.join(os.path.dirname(__file__), os.pardir)
 KEYCLOAK_CLIENT_PUBLIC_KEY = """-----BEGIN PUBLIC KEY-----
-...public key...
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAs4JgIc57+hVsz9bha1yreATI90QyUf4Rj1kYwR/u8gd8fz2mLSXoM06yhk8Gp5e/6IYHNTjEW9Q6dT4vq1nC95HwM6Rw6Z6dbqL6qyOoyAXOdJK4tA5gR4DOqMEGbE03sPi8tPE2XuZQQJjklZuDz5IW01VC0T4bpFHl9Oy4/irbpGy2U7+KcyzrTayCHVDtC1FXlGswWpZEfh1cbE0POZmzQAsXPlp13DHAtidQxon/JU8lD/2+KZR3FVHXOr2BwazpSUIJHrEOdt/vfS+6R9B+A75jbhZT9DqM2Ckqp6MHtZxwNUTuDDiIXmE9GeD9iDTtfo03zCVhQsPuyTcKkQIDAQAB
 -----END PUBLIC KEY-----"""
 
-KEYCLOAK_CLIENT_SECRET_KEY = """-----BEGIN PRIVATE KEY-----
-16f22e26-2cb5-4c81-b312-8fa065cdb20b
------END PRIVATE KEY-----"""
-
 KEYCLOAK_CONFIG = {
-    'KEYCLOAK_REALM': 'Django-demo',
-    'KEYCLOAK_CLIENT_ID': 'Django-client',
+    'KEYCLOAK_REALM': 'vue-realm',
+    'KEYCLOAK_CLIENT_ID': 'vue-client',
     'KEYCLOAK_DEFAULT_ACCESS': 'ALLOW',
-    'KEYCLOAK_AUTHORIZATION_CONFIG': os.path.join(CONFIG_DIR, 'django-client-authz-config.json'),
-    'KEYCLOAK_METHOD_VALIDATE_TOKEN': 'DECODE',
-    'KEYCLOAK_SERVER_URL': 'http://http://192.168.99.100:32768/auth/',
-    'KEYCLOAK_CLIENT_SECRET_KEY': '16f22e26-2cb5-4c81-b312-8fa065cdb20b',
-    'KEYCLOAK_CLIENT_PUBLIC_KEY': KEYCLOAK_CLIENT_PUBLIC_KEY, 
+    'KEYCLOAK_AUTHORIZATION_CONFIG': os.path.join(CONFIG_DIR, 'vue-client-authz-config.json'),
+    'KEYCLOAK_METHOD_VALIDATE_TOKEN': 'introspect',
+    'KEYCLOAK_SERVER_URL': 'http://192.168.99.100:32768/auth/',
+    'KEYCLOAK_CLIENT_SECRET_KEY': 'fce7fbd6-323d-4ffc-87e0-f9cee5dbfc9a',
+    'KEYCLOAK_CLIENT_PUBLIC_KEY': KEYCLOAK_CLIENT_PUBLIC_KEY,
 }
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -65,6 +59,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'rest_framework',
     'db',
     'demo'
@@ -74,12 +69,21 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_keycloak_demo.middleware.KeycloakMiddleware'
 ]
+
+
+CORS_ORIGIN_WHITELIST = (
+    'http://192.168.99.100:8081',
+    'http://192.168.0.14:8080',
+    'http://192.168.99.100'
+
+)
+CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'django_keycloak_demo.urls'
 

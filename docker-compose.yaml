@@ -6,27 +6,9 @@ services:
       context: .
       dockerfile: ./Dockerfile
     ports: 
-      - 8081:8000
+      - 8082:8000
     volumes:
       - /rails/django_keycloak_demo:/usr/src/app
     command: /bin/bash
     tty: true
     restart: always
-
-  keycloak:
-    image: jboss/keycloak:latest
-    ports:
-      - 32768:8080
-    environment:
-      PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-      JAVA_HOME: /usr/lib/jvm/java
-      KEYCLOAK_VERSION: 6.0.1
-      JDBC_POSTGRES_VERSION: 42.2.5
-      JDBC_MYSQL_VERSION: 5.1.46
-      JDBC_MARIADB_VERSION: 2.2.3
-      LAUNCH_JBOSS_IN_BACKGROUND: 1
-      PROXY_ADDRESS_FORWARDING: null
-      JBOSS_HOME: /opt/jboss/keycloak
-      LANG: en_US.UTF-8
-      KEYCLOAK_USER: admin
-      KEYCLOAK_PASSWORD: admin
